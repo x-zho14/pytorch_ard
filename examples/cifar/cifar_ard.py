@@ -129,17 +129,17 @@ def test(epoch):
     print('Test loss: %.2f' % np.mean(test_loss))
     print('Test accuracy: %.2f%%' % acc)
     print('Compression: %.2f%%' % (100. * get_dropped_params_ratio(model)))
-    if acc > best_acc:
-        print('Saving..')
-        state = {
-            'net': model.state_dict(),
-            'acc': acc,
-            'epoch': epoch,
-        }
-        if not os.path.isdir('checkpoint'):
-            os.mkdir('checkpoint')
-        torch.save(state, ckpt_file)
-        best_acc = acc
+    # if acc > best_acc:
+    #     print('Saving..')
+    #     state = {
+    #         'net': model.state_dict(),
+    #         'acc': acc,
+    #         'epoch': epoch,
+    #     }
+    #     if not os.path.isdir('checkpoint'):
+    #         os.mkdir('checkpoint')
+    #     torch.save(state, ckpt_file)
+    #     best_acc = acc
 
 for n, m in model.named_modules():
     print(n, m)
