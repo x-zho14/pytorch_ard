@@ -89,6 +89,7 @@ def train(epoch):
     correct = 0
     total = 0
     for batch_idx, (inputs, targets) in enumerate(trainloader):
+        print("batch_idx", batch_idx, len(trainloader))
         inputs, targets = inputs.to(device), targets.to(device)
         optimizer.zero_grad()
         outputs = model(inputs)
@@ -140,10 +141,15 @@ def test(epoch):
         torch.save(state, ckpt_file)
         best_acc = acc
 
-
+for n, m in model.named_modules():
+    print(n, m)
+    if hasattr(m, "log_sigma2"):
+        print(f"==> print {n} 's log_sigma2 grad magnitude'")
+        print(m.log_sigma2.grad)
 for epoch in range(start_epoch, start_epoch + n_epoches):
     train(epoch)
     for n, m in model.named_modules():
+        print(n, m)
         if hasattr(m, "log_sigma2"):
             print(f"==> print {n} 's log_sigma2 grad magnitude'")
             print(m.log_sigma2.grad)
