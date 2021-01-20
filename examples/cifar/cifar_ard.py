@@ -148,9 +148,36 @@ for n, m in model.named_modules():
         print(m.log_sigma2.grad)
 for epoch in range(start_epoch, start_epoch + n_epoches):
     train(epoch)
+    log_list = []
+    log_layer_dict = {}
+    idx = 0
+    import matplotlib.pyplot as plt
     for n, m in model.named_modules():
-        print(n, m)
         if hasattr(m, "log_sigma2"):
-            print(f"==> print {n} 's log_sigma2 grad magnitude'")
-            print(m.log_sigma2.grad)
+            idx += 1
+            print(f"==> flattening {n} subnet")
+            log_flattened = torch.flatten(m.log_sigma2.grad.data)
+            log_layer_dict[idx] = log_flattened.tolist()
+            plt.hist(log_flattened.tolist(), bins=50)
+            plt.xlim(0, 1)
+            plt.xlabel("Probability")
+            plt.ylabel("# of Weights")
+            plt.title("Histogram of Probability at Layer "+ str(idx))
+            plt.grid(True, linestyle="--")
+            plt.savefig("Lenet_"+str(idx)+".pdf", bbox_inches='tight')
+            plt.clf()
+            plt.cla()
+            log_list.extend(log_flattened.tolist())
+    n, bins, patches = plt.hist(log_list, bins=50)
+    plt.xlim(0, 1)
+    plt.xlabel("Grad")
+    plt.ylabel("Frequecy")
+    plt.title("Histogram of Grad of All Layers")
+    plt.grid(True, linestyle="--")
+    plt.savefig("Lenet"+"_"+'whole'+".pdf", bbox_inches='tight')
+    # for n, m in model.named_modules():
+    #     print(n, m)
+    #     if hasattr(m, "log_sigma2"):
+    #         print(f"==> print {n} 's log_sigma2 grad magnitude'")
+    #         print(m.log_sigma2.grad)
     test(epoch)
