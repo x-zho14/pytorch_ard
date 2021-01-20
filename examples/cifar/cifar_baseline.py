@@ -125,4 +125,8 @@ def test(epoch):
 
 for epoch in range(start_epoch, start_epoch + 200):
     train(epoch)
+    for n, m in model.named_modules():
+        if hasattr(m, "log_sigma2"):
+            print(f"==> print {n} 's log_sigma2 grad magnitude'")
+            print(m.log_sigma2.grad)
     test(epoch)
