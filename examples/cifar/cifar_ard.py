@@ -164,7 +164,7 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
             plt.ylabel("# of Weights")
             plt.title("Histogram of Probability at Layer "+ str(idx))
             plt.grid(True, linestyle="--")
-            plt.savefig("Lenet_"+str(idx)+"epoch"+str(epoch)".pdf", bbox_inches='tight')
+            plt.savefig("Lenet_"+str(idx)+"epoch"+str(epoch)+".pdf", bbox_inches='tight')
             plt.clf()
             plt.cla()
             log_list.extend(log_flattened.tolist())
