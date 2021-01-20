@@ -164,7 +164,7 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
             plt.ylabel("# of Weights")
             plt.title("Histogram of Probability at Layer "+ str(idx))
             plt.grid(True, linestyle="--")
-            plt.savefig("Lenet_"+str(idx)+".pdf", bbox_inches='tight')
+            plt.savefig("Lenet_"+str(idx)+"epoch"+str(epoch)".pdf", bbox_inches='tight')
             plt.clf()
             plt.cla()
             log_list.extend(log_flattened.tolist())
@@ -174,7 +174,7 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
     plt.ylabel("Frequecy")
     plt.title("Histogram of Grad of All Layers")
     plt.grid(True, linestyle="--")
-    plt.savefig("Lenet"+"_"+'whole'+".pdf", bbox_inches='tight')
+    plt.savefig("Lenet"+"_"+'whole'+str(epoch)+".pdf", bbox_inches='tight')
     # for n, m in model.named_modules():
     #     print(n, m)
     #     if hasattr(m, "log_sigma2"):
