@@ -12,7 +12,7 @@ import os
 import sys
 sys.path.append('../')
 
-from models import LeNetARD
+from models import LeNetARD, VGG
 from torch_ard import get_ard_reg, get_dropped_params_ratio, ELBOLoss
 
 
@@ -54,7 +54,7 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer',
 
 # Model
 print('==> Building model..')
-model = LeNetARD(3, len(classes)).to(device)
+model = Vgg(3, len(classes)).to(device)
 
 
 if os.path.isfile(ckpt_file):
