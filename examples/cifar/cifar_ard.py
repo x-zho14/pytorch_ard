@@ -123,7 +123,6 @@ def test(epoch):
             _, predicted = outputs.max(1)
             total += targets.size(0)
             correct += predicted.eq(targets).sum().item()
-            break
     # Save checkpoint.
     acc = 100. * correct / total
     print('Test loss: %.2f' % np.mean(test_loss))
@@ -157,7 +156,7 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
             idx += 1
             print(f"==> flattening {n} subnet")
             log_flattened = torch.flatten(torch.abs(m.log_sigma2.grad.data))
-            print("fraction of zero grad:", 1 - torch.sum(log_flattened==0)/log_flattened.nelement())
+            print("fraction of zero grad:", 1 - float(torch.sum(log_flattened==0).item())/log_flattened.nelement())
             log_layer_dict[idx] = log_flattened.tolist()
             plt.hist(log_flattened.tolist(), bins=50)
             # plt.xlim(0, 1)
