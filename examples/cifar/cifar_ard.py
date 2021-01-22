@@ -54,7 +54,7 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer',
 
 # Model
 print('==> Building model..')
-model = vgg19_bn_new_fc().to(device)
+model = LeNetARD(3, len(classes)).to(device)
 
 
 if os.path.isfile(ckpt_file):
