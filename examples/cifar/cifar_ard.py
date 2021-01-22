@@ -54,7 +54,7 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer',
 
 # Model
 print('==> Building model..')
-model = Vgg(3, len(classes)).to(device)
+model = vgg19_bn_new_fc().to(device)
 
 
 if os.path.isfile(ckpt_file):
