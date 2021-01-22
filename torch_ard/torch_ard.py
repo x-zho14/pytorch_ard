@@ -111,8 +111,7 @@ class Conv2dARD(nn.Conv2d):
                             self.padding, self.dilation, self.groups)
         W = self.weight
 
-        conved_mu = F.conv2d(input, W, self.bias, self.stride,
-                             self.padding, self.dilation, self.groups)
+        conved_mu = F.conv2d(input, W, self.bias, self.stride, self.padding, self.dilation, self.groups)
         log_alpha = self.log_alpha
         conved_si = torch.sqrt(1e-15 + F.conv2d(input * input,
                                                 torch.exp(log_alpha) * W *

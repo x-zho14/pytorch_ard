@@ -156,7 +156,8 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
         if hasattr(m, "log_sigma2"):
             idx += 1
             print(f"==> flattening {n} subnet")
-            log_flattened = torch.flatten(m.log_sigma2.grad.data)
+            log_flattened = torch.flatten(torch.abs(m.log_sigma2.grad.data))
+            print("fraction of zero grad:", 1 - torch.count_nonzero(log_flattened)/log_flattened.nelement())
             log_layer_dict[idx] = log_flattened.tolist()
             plt.hist(log_flattened.tolist(), bins=50)
             # plt.xlim(0, 1)
@@ -168,6 +169,7 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
             plt.clf()
             plt.cla()
             log_list.extend(log_flattened.tolist())
+    print("Whole fraction of zero grad:", 1 - np.count_nonzero(log_list)/len(log_list))
     n, bins, patches = plt.hist(log_list, bins=50)
     # plt.xlim(0, 1)
     plt.xlabel("Grad")
