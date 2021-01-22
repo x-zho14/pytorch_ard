@@ -151,12 +151,14 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
     log_layer_dict = {}
     idx = 0
     import matplotlib.pyplot as plt
+    sum = 0
     for n, m in model.named_modules():
         if hasattr(m, "log_sigma2"):
             idx += 1
             print(f"==> flattening {n} subnet")
             log_flattened = torch.flatten(torch.abs(m.log_sigma2.grad.data))
-            print("fraction of zero grad:", 1 - float(torch.sum(log_flattened==0).item())/log_flattened.nelement())
+            print("fraction of zero grad:", float(torch.sum(log_flattened==0).item())/log_flattened.nelement())
+            sum += torch.sum(log_flattened==0).item()
             log_layer_dict[idx] = log_flattened.tolist()
             plt.hist(log_flattened.tolist(), bins=50)
             # plt.xlim(0, 1)
@@ -169,6 +171,7 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
             plt.cla()
             log_list.extend(log_flattened.tolist())
     print("Whole fraction of zero grad:", 1 - np.count_nonzero(log_list)/len(log_list))
+    print("check, ", len(log_list)- np.count_nonzero(log_list), sum)
     n, bins, patches = plt.hist(log_list, bins=50)
     # plt.xlim(0, 1)
     plt.xlabel("Grad")
