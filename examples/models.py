@@ -108,37 +108,7 @@ class LeNetARD(nn.Module):
     def device(self):
         return next(self.parameters()).device
 
-
 class VGG(nn.Module):
-    def __init__(self, input_shape, output_shape):
-        super(LeNetARD, self).__init__()
-        self.conv1 = nn_ard.Conv2dARD(input_shape, 20, 5)
-        self.conv2 = nn_ard.Conv2dARD(20, 50, 5)
-        self.l1 = nn_ard.LinearARD(50*5*5, 500)
-        self.l2 = nn_ard.LinearARD(500, output_shape)
-        self._init_weights()
-
-    def forward(self, input):
-        out = F.relu(self.conv1(input.to(self.device)))
-        out = F.max_pool2d(out, 2)
-        out = F.relu(self.conv2(out))
-        out = F.max_pool2d(out, 2)
-        out = out.view(out.shape[0], -1)
-        out = F.relu(self.l1(out))
-        return self.l2(out)
-        # return F.log_softmax(self.l2(out), dim=1)
-
-    def _init_weights(self):
-        for layer in self.children():
-            if hasattr(layer, 'weight'): nn.init.xavier_uniform(layer.weight, gain=nn.init.calculate_gain('relu'))
-
-    @property
-    def device(self):
-        return next(self.parameters()).device
-
-
-class VGG(nn.Module):
-
     def __init__(self, builder, features):
         super(VGG, self).__init__()
         self.features = features
