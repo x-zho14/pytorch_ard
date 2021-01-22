@@ -123,7 +123,7 @@ def test(epoch):
             _, predicted = outputs.max(1)
             total += targets.size(0)
             correct += predicted.eq(targets).sum().item()
-
+            break
     # Save checkpoint.
     acc = 100. * correct / total
     print('Test loss: %.2f' % np.mean(test_loss))
