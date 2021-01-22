@@ -12,7 +12,7 @@ import os
 import sys
 sys.path.append('../')
 
-from models import LeNetARD, VGG
+from models import LeNetARD, vgg19_bn_new_fc
 from torch_ard import get_ard_reg, get_dropped_params_ratio, ELBOLoss
 
 

@@ -109,7 +109,7 @@ class LeNetARD(nn.Module):
         return next(self.parameters()).device
 
 class VGG(nn.Module):
-    def __init__(self, builder, features):
+    def __init__(self,features):
         super(VGG, self).__init__()
         self.features = features
         num_classes = 10
@@ -121,7 +121,7 @@ class VGG(nn.Module):
         return x.squeeze()
 
 
-def make_layers(cfg, builder, batch_norm=False):
+def make_layers(cfg, batch_norm=False):
     layers = []
     in_channels = 3
     for v in cfg:
@@ -146,8 +146,8 @@ cfgs = {
 }
 
 
-def _vgg(cfg, batch_norm, builder):
-    model = VGG(builder, make_layers(cfgs[cfg], builder, batch_norm=batch_norm))
+def _vgg(cfg, batch_norm):
+    model = VGG(make_layers(cfgs[cfg], batch_norm=batch_norm))
     return model
 
 
@@ -158,7 +158,7 @@ def vgg11_new_fc():
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
     """
-    return _vgg('A', False, get_builder())
+    return _vgg('A', False)
 
 
 def vgg11_bn_new_fc():
@@ -168,7 +168,7 @@ def vgg11_bn_new_fc():
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
     """
-    return _vgg('A', True, get_builder())
+    return _vgg('A', True)
 
 
 def vgg13_fc():
@@ -178,7 +178,7 @@ def vgg13_fc():
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
     """
-    return _vgg('B', False, get_builder())
+    return _vgg('B', False)
 
 
 def vgg13_bn_fc():
@@ -188,7 +188,7 @@ def vgg13_bn_fc():
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
     """
-    return _vgg('B', True, get_builder())
+    return _vgg('B', True)
 
 
 def vgg16_new_fc():
@@ -198,7 +198,7 @@ def vgg16_new_fc():
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
     """
-    return _vgg('D', False, get_builder())
+    return _vgg('D', False)
 
 
 def vgg16_bn_fc():
@@ -208,7 +208,7 @@ def vgg16_bn_fc():
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
     """
-    return _vgg('D', False, get_builder())
+    return _vgg('D', False)
 
 
 def vgg19_new_fc():
@@ -218,7 +218,7 @@ def vgg19_new_fc():
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
     """
-    return _vgg('E', False, get_builder())
+    return _vgg('E', False)
 
 
 def vgg19_bn_new_fc():
@@ -228,7 +228,7 @@ def vgg19_bn_new_fc():
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
     """
-    return _vgg('E', True, get_builder())
+    return _vgg('E', True)
 
 
 
