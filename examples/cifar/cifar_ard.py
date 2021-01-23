@@ -204,7 +204,7 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
         f.close()
         # plt.xlim(0, 1)
         plt.xlabel("Grad")
-        plt.ylabel("Frequecy")
+        plt.ylabel("Percentage")
         plt.title("Histogram of Grad of Sparse VD")
         plt.grid(True, linestyle="--")
         plt.savefig("VGG"+"_"+'whole'+str(epoch)+".pdf", bbox_inches='tight')
