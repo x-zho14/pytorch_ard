@@ -166,43 +166,48 @@ for n, m in model.named_modules():
 frac_list = []
 for epoch in range(start_epoch, start_epoch + n_epoches):
     train(epoch)
-    # log_list = []
+    log_list = []
     # log_layer_dict = {}
-    # idx = 0
-    # import matplotlib.pyplot as plt
-    total = 0
-    sum = 0
-    for n, m in model.named_modules():
-        if hasattr(m, "log_sigma2"):
-            # idx += 1
-            # print(f"==> flattening {n} subnet")
-            # log_flattened = torch.flatten(torch.log10(torch.abs(m.log_sigma2.grad.data)+1e-20))
-            # print("fraction of zero grad:", float(torch.sum(m.log_sigma2.grad.data==0).item())/log_flattened.nelement())
-            # val_flattened = torch.flatten(m.log_sigma2.data)
-            # print("fraction of non -10:", float(torch.sum(val_flattened != -10).item()) / val_flattened.nelement())
-            sum += torch.sum(m.log_sigma2.grad==0).item()
-            total += m.log_sigma2.nelement()
-            # log_layer_dict[idx] = log_flattened.tolist()
-            # plt.hist(log_flattened.tolist(), bins=50)
-            # # plt.xlim(0, 1)
-            # plt.xlabel("Probability")
-            # plt.ylabel("# of Weights")
-            # plt.title("Histogram of Probability at Layer "+ str(idx))
-            # plt.grid(True, linestyle="--")
-            # plt.savefig("Lenet_"+str(idx)+"epoch"+str(epoch)+".pdf", bbox_inches='tight')
-            # plt.clf()
-            # plt.cla()
-            # log_list.extend(log_flattened.tolist())
-    print("Whole fraction of zero grad:", float(sum)/float(total))
-    frac_list.append(float(sum)/float(total))
-    # print("check, ", len(log_list)- np.count_nonzero(log_list), sum)
-    # n, bins, patches = plt.hist(log_list, bins=50)
-    # # plt.xlim(0, 1)
-    # plt.xlabel("Grad")
-    # plt.ylabel("Frequecy")
-    # plt.title("Histogram of Grad of All Layers")
-    # plt.grid(True, linestyle="--")
-    # plt.savefig("Lenet"+"_"+'whole'+str(epoch)+".pdf", bbox_inches='tight')
+    if epoch == 0:
+        idx = 0
+        import matplotlib.pyplot as plt
+        total = 0
+        sum = 0
+        for n, m in model.named_modules():
+            if hasattr(m, "log_sigma2"):
+                # idx += 1
+                # print(f"==> flattening {n} subnet")
+                log_flattened = torch.flatten(torch.log10(torch.abs(m.log_sigma2.grad.data)+1e-20))
+                # print("fraction of zero grad:", float(torch.sum(m.log_sigma2.grad.data==0).item())/log_flattened.nelement())
+                # val_flattened = torch.flatten(m.log_sigma2.data)
+                # print("fraction of non -10:", float(torch.sum(val_flattened != -10).item()) / val_flattened.nelement())
+                sum += torch.sum(m.log_sigma2.grad==0).item()
+                total += m.log_sigma2.nelement()
+                # log_layer_dict[idx] = log_flattened.tolist()
+                # plt.hist(log_flattened.tolist(), bins=50)
+                # # plt.xlim(0, 1)
+                # plt.xlabel("Probability")
+                # plt.ylabel("# of Weights")
+                # plt.title("Histogram of Probability at Layer "+ str(idx))
+                # plt.grid(True, linestyle="--")
+                # plt.savefig("Lenet_"+str(idx)+"epoch"+str(epoch)+".pdf", bbox_inches='tight')
+                # plt.clf()
+                # plt.cla()
+                log_list.extend(log_flattened.tolist())
+        print("Whole fraction of zero grad:", float(sum)/float(total))
+        frac_list.append(float(sum)/float(total))
+        # print("check, ", len(log_list)- np.count_nonzero(log_list), sum)
+        n, bins, patches = plt.hist(log_list, bins=50, density=True)
+        import pickle
+        f = open('30_log_list.pickle', 'w')
+        pickle.dump(log_list, f)
+        f.close()
+        # plt.xlim(0, 1)
+        plt.xlabel("Grad")
+        plt.ylabel("Frequecy")
+        plt.title("Histogram of Grad of Sparse VD")
+        plt.grid(True, linestyle="--")
+        plt.savefig("VGG"+"_"+'whole'+str(epoch)+".pdf", bbox_inches='tight')
     # for n, m in model.named_modules():
     #     print(n, m)
     #     if hasattr(m, "log_sigma2"):
