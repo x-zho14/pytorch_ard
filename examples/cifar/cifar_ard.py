@@ -54,8 +54,8 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer',
 
 # Model
 print('==> Building model..')
-# model = vgg19_bn_new_fc().to(device)
-model = LeNetARD(3, 10).to(device)
+model = vgg19_bn_new_fc().to(device)
+# model = LeNetARD(3, 10).to(device)
 
 if os.path.isfile(ckpt_file):
     state_dict = model.state_dict()
@@ -95,27 +95,27 @@ def train(epoch):
         outputs = model(inputs)
         loss = criterion(outputs, targets, 1, kl_weight)
         loss.backward()
-        layer = 0
-        for n, m in model.named_modules():
-            if hasattr(m, "log_sigma2"):
-                layer += 1
-                if layer == 2:
-                    temp1 = m.log_sigma2[0][0][0][0]
-                    print("before step", batch_idx, m.log_sigma2[0][0][0][0], m.log_sigma2.grad[0][0][0][0])
-                    print(m.log_sigma2)
-                    break
+        # layer = 0
+        # for n, m in model.named_modules():
+        #     if hasattr(m, "log_sigma2"):
+        #         layer += 1
+        #         if layer == 2:
+        #             temp1 = m.log_sigma2[0][0][0][0]
+        #             print("before step", batch_idx, m.log_sigma2[0][0][0][0], m.log_sigma2.grad[0][0][0][0])
+        #             print(m.log_sigma2)
+        #             break
         # scheduler.step(loss)
         optimizer.step()
-        layer = 0
-        for n, m in model.named_modules():
-            if hasattr(m, "log_sigma2"):
-                layer += 1
-                if layer == 2:
-                    temp2 = m.log_sigma2[0][0][0][0]
-                    print("after step", batch_idx, m.log_sigma2[0][0][0][0], m.log_sigma2.grad[0][0][0][0])
-                    print(m.log_sigma2)
-                    break
-        print("diff", temp2 - temp1)
+        # layer = 0
+        # for n, m in model.named_modules():
+        #     if hasattr(m, "log_sigma2"):
+        #         layer += 1
+        #         if layer == 2:
+        #             temp2 = m.log_sigma2[0][0][0][0]
+        #             print("after step", batch_idx, m.log_sigma2[0][0][0][0], m.log_sigma2.grad[0][0][0][0])
+        #             print(m.log_sigma2)
+        #             break
+        # print("diff", temp2 - temp1)
         train_loss.append(loss.item())
         _, predicted = outputs.max(1)
         total += targets.size(0)
@@ -173,8 +173,8 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
         if hasattr(m, "log_sigma2"):
             idx += 1
             print(f"==> flattening {n} subnet")
-            log_flattened = torch.flatten(torch.abs(m.log_sigma2.grad.data))
-            print("fraction of zero grad:", float(torch.sum(log_flattened==0).item())/log_flattened.nelement())
+            log_flattened = torch.flatten(torch.log10(torch.abs(m.log_sigma2.grad.data)+1e-20))
+            print("fraction of zero grad:", float(torch.sum(m.log_sigma2.grad.data==0).item())/log_flattened.nelement())
             val_flattened = torch.flatten(m.log_sigma2.data)
             print("fraction of non -10:", float(torch.sum(val_flattened != -10).item()) / val_flattened.nelement())
             sum += torch.sum(log_flattened==0).item()
