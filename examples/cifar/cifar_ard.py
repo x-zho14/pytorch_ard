@@ -54,8 +54,8 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer',
 
 # Model
 print('==> Building model..')
-model = vgg19_bn_new_fc().to(device)
-
+# model = vgg19_bn_new_fc().to(device)
+model = LeNetARD(3, 10).to(device)
 
 if os.path.isfile(ckpt_file):
     state_dict = model.state_dict()
