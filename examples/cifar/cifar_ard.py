@@ -95,10 +95,16 @@ def train(epoch):
         outputs = model(inputs)
         loss = criterion(outputs, targets, 1, kl_weight)
         loss.backward()
-
+        for n, m in model.named_modules():
+            if hasattr(m, "log_sigma2"):
+                print("before step", batch_idx, m.log_sigma2[0][0][0][0], m.log_sigma2.grad[0][0][0][0])
+                break
         # scheduler.step(loss)
         optimizer.step()
-
+        for n, m in model.named_modules():
+            if hasattr(m, "log_sigma2"):
+                print("after step", batch_idx, m.log_sigma2[0][0][0][0], m.log_sigma2.grad[0][0][0][0])
+                break
         train_loss.append(loss.item())
         _, predicted = outputs.max(1)
         total += targets.size(0)
