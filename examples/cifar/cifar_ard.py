@@ -97,8 +97,8 @@ def train(epoch):
         loss.backward()
         layer = 0
         for n, m in model.named_modules():
-            layer += 1
             if hasattr(m, "log_sigma2"):
+                layer += 1
                 if layer == 2:
                     print("before step", batch_idx, m.log_sigma2[0][0][0][0], m.log_sigma2.grad[0][0][0][0])
                     print(m.log_sigma2)
@@ -107,8 +107,8 @@ def train(epoch):
         optimizer.step()
         layer = 0
         for n, m in model.named_modules():
-            layer += 1
             if hasattr(m, "log_sigma2"):
+                layer += 1
                 if layer == 2:
                     print("after step", batch_idx, m.log_sigma2[0][0][0][0], m.log_sigma2.grad[0][0][0][0])
                     print(m.log_sigma2)
