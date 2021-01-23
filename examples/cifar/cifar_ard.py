@@ -162,7 +162,7 @@ for n, m in model.named_modules():
     if hasattr(m, "log_sigma2"):
         print(f"==> print {n} 's log_sigma2 grad magnitude'")
         print(m.log_sigma2.grad)
-
+frac_list = []
 for epoch in range(start_epoch, start_epoch + n_epoches):
     train(epoch)
     # log_list = []
@@ -193,6 +193,7 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
             # plt.cla()
             # log_list.extend(log_flattened.tolist())
     print("Whole fraction of zero grad:", float(sum)/float(total))
+    frac_list.append(float(sum)/float(total))
     # print("check, ", len(log_list)- np.count_nonzero(log_list), sum)
     # n, bins, patches = plt.hist(log_list, bins=50)
     # # plt.xlim(0, 1)
@@ -207,3 +208,4 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
     #         print(f"==> print {n} 's log_sigma2 grad magnitude'")
     #         print(m.log_sigma2.grad)
     test(epoch)
+    print("frac list", frac_list)
