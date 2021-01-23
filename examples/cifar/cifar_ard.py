@@ -98,12 +98,14 @@ def train(epoch):
         for n, m in model.named_modules():
             if hasattr(m, "log_sigma2"):
                 print("before step", batch_idx, m.log_sigma2[0][0][0][0], m.log_sigma2.grad[0][0][0][0])
+                print(m.log_sigma2)
                 break
         # scheduler.step(loss)
         optimizer.step()
         for n, m in model.named_modules():
             if hasattr(m, "log_sigma2"):
                 print("after step", batch_idx, m.log_sigma2[0][0][0][0], m.log_sigma2.grad[0][0][0][0])
+                print(m.log_sigma2)
                 break
         train_loss.append(loss.item())
         _, predicted = outputs.max(1)
