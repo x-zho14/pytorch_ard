@@ -171,6 +171,8 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
     if epoch == 0:
         idx = 0
         import matplotlib.pyplot as plt
+        from matplotlib.ticker import PercentFormatter
+
         total = 0
         sum = 0
         for n, m in model.named_modules():
@@ -197,7 +199,11 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
         print("Whole fraction of zero grad:", float(sum)/float(total))
         frac_list.append(float(sum)/float(total))
         # print("check, ", len(log_list)- np.count_nonzero(log_list), sum)
-        n, bins, patches = plt.hist(log_list, bins=50, density=True)
+        # plt.hist(log_list, bins=50, density=True)
+        plt.hist(log_list, weights=np.ones(len(log_list)) / len(log_list), bins=50)
+
+        plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
+        # plt.show()
         # import pickle
         # f = open('30_log_list.pickle', 'w')
         # pickle.dump(log_list, f)
