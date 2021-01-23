@@ -200,8 +200,9 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
         frac_list.append(float(sum)/float(total))
         # print("check, ", len(log_list)- np.count_nonzero(log_list), sum)
         # plt.hist(log_list, bins=50, density=True)
+        print("before hist")
         plt.hist(log_list, weights=np.ones(len(log_list)) / len(log_list), bins=50)
-
+        print("after hist")
         plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
         # plt.show()
         # import pickle
