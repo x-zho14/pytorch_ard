@@ -175,6 +175,8 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
             print(f"==> flattening {n} subnet")
             log_flattened = torch.flatten(torch.abs(m.log_sigma2.grad.data))
             print("fraction of zero grad:", float(torch.sum(log_flattened==0).item())/log_flattened.nelement())
+            val_flattened = torch.flatten(m.log_sigma2.data)
+            print("fraction of non -10:", float(torch.sum(val_flattened != -10).item()) / val_flattened.nelement())
             sum += torch.sum(log_flattened==0).item()
             log_layer_dict[idx] = log_flattened.tolist()
             plt.hist(log_flattened.tolist(), bins=50)
