@@ -14,8 +14,9 @@ sys.path.append('../')
 
 from models import LeNetARD, vgg19_bn_new_fc
 from torch_ard import get_ard_reg, get_dropped_params_ratio, ELBOLoss
+import wandb
 
-
+wandb.init(project="ard")
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 ckpt_baseline_file = 'checkpoint/ckpt_baseline.t7'
