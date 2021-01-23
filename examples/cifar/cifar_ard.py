@@ -198,10 +198,10 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
         frac_list.append(float(sum)/float(total))
         # print("check, ", len(log_list)- np.count_nonzero(log_list), sum)
         n, bins, patches = plt.hist(log_list, bins=50, density=True)
-        import pickle
-        f = open('30_log_list.pickle', 'w')
-        pickle.dump(log_list, f)
-        f.close()
+        # import pickle
+        # f = open('30_log_list.pickle', 'w')
+        # pickle.dump(log_list, f)
+        # f.close()
         # plt.xlim(0, 1)
         plt.xlabel("Grad")
         plt.ylabel("Percentage")
