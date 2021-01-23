@@ -186,7 +186,7 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
                 sum += torch.sum(m.log_sigma2.grad==0).item()
                 total += m.log_sigma2.nelement()
                 # log_layer_dict[idx] = log_flattened.tolist()
-                plt.hist(log_flattened.tolist(), bins=50)
+                plt.hist(log_flattened.tolist(), weights=np.ones(len(log_flattened)) / len(log_flattened),  bins=50)
                 # plt.xlim(0, 1)
                 plt.xlabel("Magnitude of Gradient (log scale)")
                 plt.ylabel("Percentage")
