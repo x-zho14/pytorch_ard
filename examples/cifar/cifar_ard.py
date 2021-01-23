@@ -100,6 +100,7 @@ def train(epoch):
             if hasattr(m, "log_sigma2"):
                 layer += 1
                 if layer == 2:
+                    temp1 = m.log_sigma2[0][0][0][0]
                     print("before step", batch_idx, m.log_sigma2[0][0][0][0], m.log_sigma2.grad[0][0][0][0])
                     print(m.log_sigma2)
                     break
@@ -110,9 +111,11 @@ def train(epoch):
             if hasattr(m, "log_sigma2"):
                 layer += 1
                 if layer == 2:
+                    temp2 = m.log_sigma2[0][0][0][0]
                     print("after step", batch_idx, m.log_sigma2[0][0][0][0], m.log_sigma2.grad[0][0][0][0])
                     print(m.log_sigma2)
                     break
+        print("diff", temp2 - temp1)
         train_loss.append(loss.item())
         _, predicted = outputs.max(1)
         total += targets.size(0)
