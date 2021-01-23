@@ -73,7 +73,7 @@ elif os.path.isfile(ckpt_baseline_file):
     start_epoch = checkpoint['epoch']
 
 criterion = ELBOLoss(model, F.cross_entropy).to(device)
-optimizer = optim.SGD(model.parameters(), lr=1e-3,
+optimizer = optim.SGD(model.parameters(), lr=1e6,
                       momentum=0.9)
 scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min')
 n_epoches = 200
