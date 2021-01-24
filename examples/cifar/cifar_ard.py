@@ -181,6 +181,7 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
             if idx == 15:
                 # print(f"==> flattening {n} subnet")
                 log_flattened = torch.flatten(torch.log10(torch.abs(m.log_sigma2.grad.data)+1e-20))
+                torch.save(log_flattened, "VGG"+str(idx)+"epoch"+str(epoch)+".pt")
                 # print("fraction of zero grad:", float(torch.sum(m.log_sigma2.grad.data==0).item())/log_flattened.nelement())
                 # val_flattened = torch.flatten(m.log_sigma2.data)
                 # print("fraction of non -10:", float(torch.sum(val_flattened != -10).item()) / val_flattened.nelement())
