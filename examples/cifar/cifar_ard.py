@@ -178,7 +178,7 @@ for epoch in range(start_epoch, start_epoch + n_epoches):
     for n, m in model.named_modules():
         if hasattr(m, "log_sigma2"):
             idx += 1
-            if idx == 15:
+            if idx == 1:
                 # print(f"==> flattening {n} subnet")
                 log_flattened = torch.flatten(torch.log10(torch.abs(m.log_sigma2.grad.data)+1e-20))
                 torch.save(log_flattened, "VGG"+str(idx)+"epoch"+str(epoch)+".pt")
